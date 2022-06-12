@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
+var path = require('path');
+var serveStatic = require('serve-static');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(serveStatic(__dirname + "/frontend"));
 
 let todos = [{ id: 1, name: 'Cohen Interview Assignment' }];
 
