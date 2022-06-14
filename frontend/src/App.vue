@@ -1,5 +1,5 @@
-<template>
-  <p>Woah</p>
+<template v-cloak>
+  <router-view />
 </template>
 
 <script>
@@ -18,5 +18,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+[v-cloak] {
+  display: none;
 }
 </style>

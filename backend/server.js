@@ -10,7 +10,6 @@
 // app.use(express.urlencoded({ extended: true }));
 // // app.use(serveStatic(__dirname + "/frontend"));
 
-// let todos = [{ id: 1, name: 'Cohen Interview Assignment' }];
 
 // const PORT = process.env.PORT || 3000
 
