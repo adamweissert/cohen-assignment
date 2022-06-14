@@ -1,13 +1,14 @@
 <template>
    <div id="container">
-      <h1 class="text-3xl font-bold underline">ToDo List</h1>
-      <div class="card" v-for="todo in todos" :key="todo.id">
-        <div class="text-3xl font-bold underline">
-          <p>{{ todo.name }}</p>
-        </div>
+      <h1>ToDo List</h1>
+      <div v-for="todo in todos" :key="todo.id">
+          <p>{{ todo.name }} <input type="checkbox" /></p> 
       </div>
+      <router-link :to="{ name: 'AddItem' }">Add Item</router-link>
    </div>
 </template>
+<style scoped>
+</style>
 <script>
   import axios from 'axios';
   export default {
@@ -20,7 +21,6 @@
       async getAllTodos() {
         try {
           const resp = await axios.get('http://localhost:3000/todos');
-          console.log(resp);
           this.todos = resp.data;
         } catch (err) {
           console.log(err);
