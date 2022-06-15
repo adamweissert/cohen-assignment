@@ -4,19 +4,19 @@ const router = express.Router();
 
 let todos = [
     { id: 0, name: 'Make Dinner', finished: false, tasks: [
-        {title: "Look up recipe", date: "6/15/2022", priority: 3, completed: false}, 
-        {title: "Get ingredients", date: "6/15/2022", priority: 2, completed: false}, 
-        {title: "Cook the food", date: "6/15/2022", priority: 2, completed: false}, 
-        {title: "Eat!", date: "6/15/2022", priority: 3, completed: false}, 
+        {id: 0, title: "Look up recipe", date: "6/15/2022", priority: 3, completed: false}, 
+        {id: 1, title: "Get ingredients", date: "6/15/2022", priority: 2, completed: false}, 
+        {id: 2, title: "Cook the food", date: "6/15/2022", priority: 2, completed: false}, 
+        {id: 3, title: "Eat!", date: "6/15/2022", priority: 3, completed: false}, 
     ] },
     { id: 1, name: 'Play with my Cat', finished: false,  tasks: [
-        {title: "Pick out a toy", date: "6/15/2022", priority: 3, completed: false},
-        {title: "Play for 15-20 minutes", date: "6/15/2022", priority: 2, completed: false}, 
+        {id: 0, title: "Pick out a toy", date: "6/15/2022", priority: 3, completed: false},
+        {id: 1, title: "Play for 15-20 minutes", date: "6/15/2022", priority: 2, completed: false}, 
     ] },
     { id: 2, name: 'Read a book', finished: false,  tasks: [
-        {title: "Find a good book", date: "6/15/2022", priority: 2, completed: false}, 
-        {title: "Go to a quiet location", date: "6/15/2022", priority: 3, completed: false}, 
-        {title: "Start reading", date: "6/15/2022", priority: 2, completed: false}
+        {id: 0, title: "Find a good book", date: "6/15/2022", priority: 2, completed: false}, 
+        {id: 1, title: "Go to a quiet location", date: "6/15/2022", priority: 3, completed: false}, 
+        {id: 2, title: "Start reading", date: "6/15/2022", priority: 2, completed: false}
     ] },
 ];
 
