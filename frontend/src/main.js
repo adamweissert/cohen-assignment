@@ -5,8 +5,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TasksList from './components/TasksList.vue';
 import EditItem from './components/EditItem.vue';
 import TodosList from './components/TodosList.vue';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faTrashCan, faEdit, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+library.add(faTrashCan, faEdit, faCheckCircle)
 
-const app = createApp(App)
+
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
+
 
 const router = createRouter({
     history: createWebHistory(),

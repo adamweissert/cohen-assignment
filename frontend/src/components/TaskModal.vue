@@ -1,22 +1,19 @@
 <template>
+  <transition name="modal-fade">
     <div class="modal-mask">
-        <div class="modal">
-            <header class="modal-header">
-              <slot name="header">
-                Add Task
-                  <button type="button" class="btn-close" @click="close"> x </button>
-            </slot>
-            </header>
-            <section class="modal-body">
+        <div class="modal" role="dialog" aria-labelledby="modalTitle"
+        aria-describedby="modalDescription">
+            <form @submit.prevent="addTask" ref="taskForm">
+               <section class="modal-body">
                 <slot name="body">
                     <label for="description">Description: </label>
-                    <input type="text" name="description" id="description"/>
+                    <input type="text" required name="description" v-model="taskTitle" placeholder="Add Description..."/>
                     <br/>
                   <label for="date">Due Date: </label>
-                    <input type="date" name="date" id="date"/>
+                    <input type="date" name="date" min="2022-06-15" required v-model="taskDate"/>
                     <br/>
                   <label for="priority">Priority: </label>
-                   <select name="Priority" id="priority">
+                   <select name="Priority" required id="Priority" v-model="taskPriority">
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
                       <option value="High">High</option>
@@ -25,12 +22,14 @@
             </section>
             <footer class="modal-footer">
                 <slot name="footer">
-                  <p class="btn-cancel" @click="close">Cancel</p>
-                <button disabled="true" type="button" class="btn-submit" @click="close">Submit</button>
+                  <p class="btn-cancel" @click="close"             aria-label="Close modal">Cancel</p>
+                <button type="submit" class="btn-submit">Submit</button>
                 </slot>
             </footer>
+            </form>
         </div>
     </div>
+  </transition>
 </template>
 <style scoped>
  .modal-mask {
@@ -61,7 +60,7 @@
   .modal-header {
     position: relative;
     border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    color: #000;
     justify-content: space-between;
   }
 
@@ -74,8 +73,15 @@
   .modal-body {
     position: relative;
     padding: 10px 10px;
-    height: 100px;
-    width: 250px;
+    height: 200px;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .modal-body input, select {
+    padding: 10px;
   }
 
   .btn-close {
@@ -87,30 +93,84 @@
     padding: 10px;
     cursor: pointer;
     font-weight: bold;
-    color: #4AAE9B;
+    color: #000;
     background: transparent;
   }
+  .modal-fade-enter,
+  .modal-fade-leave-to {
+    opacity: 0;
+  }
 
+  .modal-fade-enter-active,
+  .modal-fade-leave-active {
+    transition: opacity .5s ease;
+  }
   .btn-submit {
     color: white;
     background: #4AAE9B;
     border: 1px solid #4AAE9B;
     border-radius: 2px;
     padding: 10px;
+    font-size: medium;
     cursor: pointer;
   }
   .btn-cancel {
     color: red;
     cursor: pointer;
+    font-size: smaller;
+    margin: 10px;
   }
 </style>
 <script>
+  import axios from 'axios';
+
   export default {
     name: "TaskModal",
+    props: ['title', 'date', 'priority'],
+    data() {
+      return {
+        taskTitle: this.$props[0],
+        taskDate: this.$props.date,
+        taskPriority: this.$props.priority,
+      }
+    },
     methods: {
        close() {
+         this.taskTitle = "",
+        this.taskDate = "",
+        this.taskPriority = "Low",
+        this.$refs.taskForm.reset();
         this.$emit('close');
       },
-    },
-}
+      async addTask() {
+        try {
+          let todoId = this.$route.params.id;
+
+          let data = { 
+            'data':  {
+              'todoId': todoId, 
+              'title': this.taskTitle, 
+              'date': this.taskDate, 
+              'priority': this.taskPriority
+            } 
+          };
+
+          const resp = await axios.post("http://localhost:3000/tasks/" + this.$route.params.id, data);
+
+          if (resp.status == 200) {
+            if (resp.data.taskId) {
+              this.$emit('callback');
+              this.close();
+            } else {
+              alert(resp.data.message);
+            }
+
+            this.$refs.taskForm.reset();
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+    }
 </script>
