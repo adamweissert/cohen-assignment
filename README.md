@@ -1,5 +1,8 @@
 # Development
 ## Running the Application
+
+Dev Notes: run `cd frontend` and `npm run serve` to serve front end. All functionality present except for editing tasks. Data appears in console but component does not reflect passed data.
+
 [Node](https://nodejs.org/en/) must be installed on your machine.
 
 Install dependencies
