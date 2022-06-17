@@ -1,6 +1,6 @@
 
 ## Adam Notes: 
-run `cd frontend` and `npm run serve` to serve front end. All functionality present except for editing tasks. Data appears in console but component does not reflect passed data.
+run `cd frontend` and `npm run serve` to serve front end. All functionality present except for editing tasks on frontend.
 
 # Development
 ## Running the Application
