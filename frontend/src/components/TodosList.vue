@@ -4,7 +4,7 @@
       <div v-for="todo in todos" :key="todo.id">
        <p v-bind:class=" todoComplete(todo.id) ? 'strike' : ''">
           <router-link :to="{name: 'Tasks', params: {id: todo.id, title: todo.name }}">{{ todo.name }} </router-link >
-          <span> ({{ getTasksCompleted(todo.id) }}/{{ getTotalTasks(todo.id)}})</span>
+          <span> ({{ getTasksCompleted(todo.id) }}/{{getAllTasks(todo.id).length}})</span>
       </p>
       </div>
       <div>
@@ -45,8 +45,6 @@
                  await axios.post('http://localhost:3000/todos', {
                      name: this.todoTitle,
                 }).then(async (resp)=> {
-                  console.log(resp.data);
-
                   if (resp.data.created) {
                      this.todoTitle = "";
                      await this.getAllTodos();
@@ -63,27 +61,24 @@
          }
       },
       todoComplete(id) {
-        let tasks = this.todos.at(id).tasks;
+        let tasks = this.getAllTasks(id);
         let tasksCompleted = tasks.filter((task) => task.completed === true).length;
-      
-        if (tasks.length > 0) {
+            
+        if (tasks.length >= 1 && tasksCompleted === tasks.length) {
            if (tasksCompleted === tasks.length) {
               return true;
             } else {
               return false;
             }
-         } else {
-            return false;
          }
       },
-      getTotalTasks(id) {
-        let tasks = this.todos.at(id).tasks;
-        return tasks.length;
-      },
       getTasksCompleted(id) {
-         let tasks = this.todos.at(id).tasks;
+         let tasks = this.getAllTasks(id);
 
         return tasks.filter((task) => task.completed == true).length;
+      },
+      getAllTasks(id) {
+        return this.todos.at(id).tasks;
       }
     },
     created() {

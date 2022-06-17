@@ -1,19 +1,19 @@
 <template>
-  <transition name="modal-fade">
+  <transition name="modal-fade" v-on:open-modal="handleData">
     <div class="modal-mask">
         <div class="modal" role="dialog" aria-labelledby="modalTitle"
         aria-describedby="modalDescription">
-            <form @submit.prevent="addTask" ref="taskForm">
+            <form @submit.prevent="addTask" ref="taskForm"  >
                <section class="modal-body">
                 <slot name="body">
                     <label for="description">Description: </label>
-                    <input type="text" required name="description" v-model="taskTitle" placeholder="Add Description..."/>
+                    <input type="text" required name="description" :taskTitle="taskTitle" v-model="taskTitle" placeholder="Add Description..."/>
                     <br/>
                   <label for="date">Due Date: </label>
-                    <input type="date" name="date" min="2022-06-15" required v-model="taskDate"/>
+                    <input type="date" name="date" min="2022-06-15" :taskDate="taskDate" required v-model="taskDate"/>
                     <br/>
                   <label for="priority">Priority: </label>
-                   <select name="Priority" required id="Priority" v-model="taskPriority">
+                   <select name="Priority" required id="Priority" :taskPriorty="taskPriority" v-model="taskPriority">
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
                       <option value="High">High</option>
@@ -129,9 +129,10 @@
     props: ['title', 'date', 'priority'],
     data() {
       return {
-        taskTitle: this.$props[0],
-        taskDate: this.$props.date,
-        taskPriority: this.$props.priority,
+        taskId: "",
+        taskTitle: "",
+        taskDate: "",
+        taskPriority: "",
       }
     },
     methods: {
@@ -170,7 +171,10 @@
         } catch (err) {
           console.log(err);
         }
+      },
+      handleData(taskData) {
+        console.log(taskData);
       }
-    }
+    },
     }
 </script>

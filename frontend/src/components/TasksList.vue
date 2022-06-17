@@ -1,9 +1,19 @@
-<template>
-   <div class="container" v-cloak>
+<template v-cloak>
+   <div class="container">
         <h1>{{ todoTitle }}</h1>
         <p v-if="tasks.length===0">No Tasks. Add Some!</p>
                 <p v-for="(task, id) in tasks" v-bind:class="task.completed ? 'strike' : ''" :key="id"> 
-                {{ task.title }} {{ task.date }} {{ task.priority }}
+                 <span v-if="task.priority === 'Low'" class="priority-Low" title="Low Priority">
+                    <font-awesome-icon icon="fa-solid fa-arrow-down"/>
+                </span>
+                <span v-if="task.priority === 'Medium'" class="priority-Medium"  title="Medium Priority">
+                    <font-awesome-icon icon="fa-solid fa-minus"/>
+                </span>
+                <span v-if="task.priority === 'High'" class="priority-High"  title="High Priority">
+                    <font-awesome-icon icon="fa-solid fa-arrow-up"/>
+                </span>
+                {{ task.title }} {{ task.date }} 
+               
                 <button title="Edit Task" class="edit" :disabled="isDisabled(task)" @click="showModal(task, id)">
                     <font-awesome-icon icon="fa-solid fa-edit" />
                 </button> 
@@ -23,11 +33,15 @@
         @callback="getTasks"/>
 
         <button @click="this.$router.go(-1)">Back</button>
-        <button @click="showModal">Add Task?</button>
-        <button @click="deleteTodo(this.$route.params.id)">Delete ToDo List?</button>
+        <button @click="showModal">Add Task</button>
+        <button @click="deleteTodo(this.$route.params.id)">Delete List</button>
    </div>
 </template>
 <style scoped>
+    .container > button {
+        margin: 0.25rem;
+    }
+    
     div {
         margin: auto;
     }
@@ -52,6 +66,17 @@
     .delete:not([disabled]), font-awesome{
         color:red;
         font-size: medium;
+         border:0;
+        background:none;
+    }
+    .priority-Low{
+        color: blue;
+    }
+    .priority-High {
+        color: red;
+    }
+    .priority-Medium {
+        color: orange;
     }
 </style>
 <script>
@@ -114,7 +139,6 @@
         },
         async deleteTodo(id) {
             try {
-                console.log("id in delete" + id);
                 const resp = await axios.delete(`http://localhost:3000/todos/${id}`);
 
                 if (resp.status === 200) {
@@ -132,9 +156,9 @@
 
             return false;
         },
-        showModal(task, id) {
-            TaskModal.props = [id, task.title, task.date, task.priority];
+        showModal(task) {
             this.modalVisible = true;
+            this.$emit("open-modal", task.title);
         },
         closeModal() {
             this.modalVisible = false;
